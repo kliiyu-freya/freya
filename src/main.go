@@ -73,6 +73,6 @@ func main() {
 	// Start handling messages in a separate goroutine
 	go handleMessages()
 
-	fmt.Println("WebSocket server started on :6969")
-	log.Fatal(http.ListenAndServe(":6969", nil))
+	fmt.Println("WebSocket server started on :6672")
+	log.Fatal(http.ListenAndServe(":6672", nil))
 }

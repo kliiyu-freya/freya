@@ -28,7 +28,7 @@ WORKDIR /root/
 COPY --from=builder /app/websocket-server .
 
 # Expose the port that the server listens on
-EXPOSE 6969
+EXPOSE 6672
 
 # Run the WebSocket server
 CMD ["./websocket-server"]
