@@ -1,7 +1,7 @@
 # Dockerfile
 
 # Use an official lightweight Go image as the build environment
-FROM golang:1.19-alpine AS builder
+FROM golang:1.23.3-alpine AS builder
 
 # Set the working directory inside the container
 WORKDIR /app
