@@ -16,7 +16,7 @@ RUN go mod download
 COPY . .
 
 # Build the Go application
-RUN go build -o websocket-server main.go
+RUN go build -o websocket-server ./src/main.go
 
 # Use a minimal base image to run the application
 FROM alpine:latest
