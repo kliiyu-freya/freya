@@ -7,7 +7,7 @@ FROM golang:1.19-alpine AS builder
 WORKDIR /app
 
 # Copy the Go module files to cache dependencies
-COPY go.mod go.sum ./
+COPY src/go.mod src/go.sum ./
 
 # Download dependencies
 RUN go mod download
