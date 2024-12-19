@@ -32,13 +32,20 @@ func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 	// Register new client
 	clients[conn] = true
 	log.Println("New WebSocket connection established")
+	go sendNetworkInfo()
+
+	// Ensure client is removed from the map when the function exits
+	defer func() {
+		delete(clients, conn)
+		go sendNetworkInfo()
+		log.Println("WebSocket connection closed")
+	}()
 
 	// Listen for messages from this client
 	for {
 		_, message, err := conn.ReadMessage()
 		if err != nil {
 			log.Println("WebSocket read error:", err)
-			delete(clients, conn)
 			break
 		}
 		log.Printf("Received message: %s\n", message)
@@ -64,6 +71,29 @@ func handleMessages() {
 			}
 		}
 	}
+}
+
+func sendNetworkInfo() {
+	var connections = len(clients)
+
+	var networkStatus string
+	resp, err := http.Get("http://www.example.com")
+	if err != nil {
+		networkStatus = "disconnected"
+	} else {
+		networkStatus = "connected"
+		resp.Body.Close()
+	}
+
+	message := fmt.Sprintf(`{
+		"type": "network_info",
+		"data": {
+			"networkStatus": "%s",
+			"connections": %d
+		}
+	}`, networkStatus, connections)
+
+	broadcast <- []byte(message)
 }
 
 func main() {
